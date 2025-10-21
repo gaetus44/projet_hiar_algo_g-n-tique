@@ -5,25 +5,25 @@ from individual import Individual
 from population import Population
 
 class SimpleGeneticAlgorithm:
-    user_input = input("Probabilité de choisir les parents (ex: 0.5) ? [Défaut: 0.5]: ")
-    uniform_rate = float(user_input) if user_input else 0.5
-
-    user_input = input("Probabilité de mutation (ex: 0.025) ? [Défaut: 0.025]: ")
-    mutation_rate = float(user_input) if user_input else 0.025
-
-    user_input = input("Nombre d'individus dans le tournoi ? [Défaut: 5]: ")
-    tournament_size = int(user_input) if user_input else 5
-
-    user_input = input("Activer l'élitisme (o/n) ? [Défaut: Oui]: ").lower()
-    elitism = False if user_input == 'n' else True
-
-    user_input = input("Nombre maximum de génération? [Défaut: 50]: ")
-    max_gen = int(user_input) if user_input else 50
-
 
     def __init__(self, solution_string="0"*64):
         # Transforme la solution en liste de 0 et 1
         self.solution = [int(c) if c in "01" else 0 for c in solution_string]
+
+        user_input = input("Probabilité de choisir les parents (ex: 0.5) ? [Défaut: 0.5]: ")
+        self.uniform_rate = float(user_input) if user_input else 0.5
+
+        user_input = input("Probabilité de mutation (ex: 0.025) ? [Défaut: 0.025]: ")
+        self.mutation_rate = float(user_input) if user_input else 0.025
+
+        user_input = input("Nombre d'individus dans le tournoi ? [Défaut: 5]: ")
+        self.tournament_size = int(user_input) if user_input else 5
+
+        user_input = input("Activer l'élitisme (o/n) ? [Défaut: Oui]: ").lower()
+        self.elitism = False if user_input == 'n' else True
+
+        user_input = input("Nombre maximum de génération? [Défaut: 50]: ")
+        self.max_gen = int(user_input) if user_input else 50
 
 
     def run_algorithm(self, population_size):
@@ -32,7 +32,7 @@ class SimpleGeneticAlgorithm:
         generation_count = 1
         print(self.max_gen)
         # Boucle jusqu'à ce que la solution soit trouvée
-        while pop.get_fittest(self.solution).get_fitness(self.solution) < self.get_max_fitness() or generation_count <= self.max_gen:#valeur max du fittest est la taille de la chaine cible
+        while pop.get_fittest(self.solution).get_fitness(self.solution) < self.get_max_fitness() and generation_count <= self.max_gen:#valeur max du fittest est la taille de la chaine cible
             fittest = pop.get_fittest(self.solution)#cherche l'individu avec le plus haut fittest
             print(f"Generation: {generation_count} Correct genes found: {fittest.get_fitness(self.solution)}")
             # Évolue la population pour la prochaine génération
