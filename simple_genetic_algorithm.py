@@ -6,7 +6,7 @@ from population import Population
 
 class SimpleGeneticAlgorithm:
 
-    def __init__(self, solution_string="0"*64):
+    def __init__(self, solution_string="0"*64, selection_type=):
         # Transforme la solution en liste de 0 et 1
         self.solution = [int(c) if c in "01" else 0 for c in solution_string]
 
