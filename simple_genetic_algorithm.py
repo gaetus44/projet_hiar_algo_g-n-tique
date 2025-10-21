@@ -1,4 +1,6 @@
 import random
+from encodings.punycode import generate_generalized_integer
+
 from individual import Individual
 from population import Population
 
@@ -15,6 +17,10 @@ class SimpleGeneticAlgorithm:
     user_input = input("Activer l'élitisme (o/n) ? [Défaut: Oui]: ").lower()
     elitism = False if user_input == 'n' else True
 
+    user_input = input("Nombre maximum de génération? [Défaut: 50]: ")
+    max_gen = int(user_input) if user_input else 50
+
+
     def __init__(self, solution_string="0"*64):
         # Transforme la solution en liste de 0 et 1
         self.solution = [int(c) if c in "01" else 0 for c in solution_string]
@@ -24,9 +30,9 @@ class SimpleGeneticAlgorithm:
         # Crée la population initiale
         pop = Population(population_size, len(self.solution), True)
         generation_count = 1
-
+        print(self.max_gen)
         # Boucle jusqu'à ce que la solution soit trouvée
-        while pop.get_fittest(self.solution).get_fitness(self.solution) < self.get_max_fitness():#valeur max du fittest est la taille de la chaine cible
+        while pop.get_fittest(self.solution).get_fitness(self.solution) < self.get_max_fitness() or generation_count <= self.max_gen:#valeur max du fittest est la taille de la chaine cible
             fittest = pop.get_fittest(self.solution)#cherche l'individu avec le plus haut fittest
             print(f"Generation: {generation_count} Correct genes found: {fittest.get_fitness(self.solution)}")
             # Évolue la population pour la prochaine génération
