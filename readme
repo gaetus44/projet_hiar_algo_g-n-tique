@@ -1,0 +1,39 @@
+🔹 Points à surveiller dans le code Python
+
+Longueur des individus et de la solution
+
+Si la solution passée au SimpleGeneticAlgorithm n’a pas la même longueur que les individus (par défaut 64 bits), il peut y avoir des erreurs.
+
+Vérifie que len(solution) == gene_length partout.
+
+Mutation
+
+La mutation fait 1 - bit pour inverser le bit. C’est correct pour 0/1, mais si jamais tu changes le type de genes, ça pourrait casser.
+
+Tournament selection
+
+On ajoute directement des individus dans le tournoi, ce sont les mêmes objets que dans la population, donc ils partagent la référence.
+
+Ça peut poser problème si tu modifies ces individus par la suite (mutation).
+
+Fitness recalculée
+
+Dans Individual.get_fitness(), on stocke le résultat pour éviter de recalculer.
+
+Si tu modifies les gènes (mutation), il faut bien réinitialiser fitness = 0 pour que ce soit recalculé.
+
+Actuellement, c’est fait dans set_single_gene(), donc ça devrait aller.
+
+Affichage / performance
+
+Avec 64 bits et 50+ individus, l’algorithme peut prendre plusieurs secondes par génération.
+
+Si tu veux un test rapide, réduis gene_length à 8 ou 16 bits pour vérifier que tout fonctionne.
+
+Élitisme et indexation
+
+Le code ajoute le “fittest” au début du nouveau population.
+
+Ensuite, il commence à ajouter les autres individus à partir de elitism_offset.
+
+Avec des listes Python, il faut faire attention aux indices pour ne pas écraser le premier individu.
