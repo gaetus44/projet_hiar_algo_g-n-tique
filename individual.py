@@ -1,4 +1,5 @@
 import random
+import math
 
 class Individual:
     def __init__(self, gene_length=64, genes_list=None):
@@ -48,7 +49,8 @@ class Individual:
             penalty = length_difference * 0.5
 
             # fitness finale
-            self.fitness = max(0, matching_bits - penalty)
+            self.fitness = math.floor(max(0, matching_bits - penalty))
+
 
         return self.fitness
 

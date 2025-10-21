@@ -39,7 +39,7 @@ class SimpleGeneticAlgorithm:
 
     def run_algorithm(self, population_size):
         # Crée la population initiale
-        pop = Population(population_size, len(self.solution), True)
+        pop = Population(population_size, True)
         generation_count = 1
 
         # Boucle jusqu'à ce que la solution soit trouvée
@@ -106,7 +106,7 @@ class SimpleGeneticAlgorithm:
         return new_pop
 
     def crossover(self, indiv1, indiv2):
-        keep_fittest = False
+        keep_fittest = True
         # Crée un enfant en mélangeant les gènes des deux parents
 
         shorter, longer = (indiv1, indiv2) if indiv1.get_length() < indiv2.get_length() else (indiv2, indiv1)
@@ -129,7 +129,7 @@ class SimpleGeneticAlgorithm:
                 #print("Keep additional bits only if they belong to fittest parent")
                 if longer.get_fitness(self.solution) > shorter.get_fitness(self.solution):         # Keep additional bits only if they belong to fittest parent (1461 gen for "10101010101010101010101010101")
                     child_genes.append(longer.get_single_gene(i))
-                    pass
+
 
         return Individual(genes_list=child_genes)
 
@@ -148,7 +148,7 @@ class SimpleGeneticAlgorithm:
 
     def tournament_selection(self, pop):
         # Sélectionne le meilleur individu parmi un sous-groupe aléatoire/roue pour sélectionner le parent
-        tournament = Population(self.tournament_size, len(self.solution), initialize=False)
+        tournament = Population(self.tournament_size, initialize=False)
         for _ in range(self.tournament_size):
             random_indiv = pop.get_individual(random.randint(0, pop.size()-1))
             tournament.individuals.append(random_indiv)

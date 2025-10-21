@@ -1,13 +1,19 @@
+import random
+
 from individual import Individual
 
 class Population:
-    def __init__(self, size, gene_length=64, initialize=True):
+    def __init__(self, size, initialize=True):
         # Liste qui contient tous les individus
         self.individuals = []
         if initialize:
             # Crée 'size' individus aléatoires
             for _ in range(size):
-                self.individuals.append(Individual(gene_length))
+                random_gene = random.randint(32,128)
+                individu=Individual(random_gene)
+                self.individuals.append(individu)
+                #print(individu)
+
 
     def get_individual(self, index):
         # Retourne l'individu à la position 'index'
