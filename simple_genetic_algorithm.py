@@ -41,7 +41,7 @@ class SimpleGeneticAlgorithm:
         # Crée la population initiale
         pop = Population(population_size, len(self.solution), True)
         generation_count = 1
-        print(self.max_gen)
+
         # Boucle jusqu'à ce que la solution soit trouvée
         while pop.get_fittest(self.solution).get_fitness(self.solution) < self.get_max_fitness() and generation_count <= self.max_gen:#valeur max du fittest est la taille de la chaine cible
             fittest = pop.get_fittest(self.solution)#cherche l'individu avec le plus haut fittest
@@ -67,7 +67,7 @@ class SimpleGeneticAlgorithm:
     def evolve_population(self, pop):#reproduire/muter/sélectionner
         #garde le meilleur individu si elitism est à true/crée de nouveau individus par crossover(reproduction)/applique une mutation aléatoire pour introduire la diversité
         # Nouvelle population videa
-        new_pop = Population(pop.size(), len(self.solution), initialize=False)#création d'une nouvelle population pour les enfants
+        new_pop = Population(pop.size(), initialize=False) #création d'une nouvelle population pour les enfants
         elitism_offset = 1 if self.elitism else 0
 
         # Garde le meilleur individu si élitisme activé
@@ -106,6 +106,7 @@ class SimpleGeneticAlgorithm:
         return new_pop
 
     def crossover(self, indiv1, indiv2):
+        keep_fittest = False
         # Crée un enfant en mélangeant les gènes des deux parents
 
         shorter, longer = (indiv1, indiv2) if indiv1.get_length() < indiv2.get_length() else (indiv2, indiv1)
@@ -118,9 +119,17 @@ class SimpleGeneticAlgorithm:
             else:#sinon copie le gène du parent 2 et fait ça pour les 64 bits
                 child_genes.append(indiv2.get_single_gene(i))
 
+
         for i in range(shorter.get_length(), longer.get_length()):
-            if random.random() < 0.5:
-                child_genes.append(longer.get_single_gene(i))
+            if not keep_fittest:
+                #print("random")
+                if random.random() < 0.5:                               # random (46 gen for "10101010101010101010101010101")
+                    child_genes.append(longer.get_single_gene(i))
+            else:
+                #print("Keep additional bits only if they belong to fittest parent")
+                if longer.get_fitness(self.solution) > shorter.get_fitness(self.solution):         # Keep additional bits only if they belong to fittest parent (1461 gen for "10101010101010101010101010101")
+                    child_genes.append(longer.get_single_gene(i))
+                    pass
 
         return Individual(genes_list=child_genes)
 
