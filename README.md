@@ -1,4 +1,4 @@
-# Projet d'Algorithme Génétique (HIAR)
+# Projet d'Algorithme Génétique (HIARD)
 
 Ce projet est une implémentation en Python d'un algorithme génétique (AG) simple. L'objectif de l'algorithme est de faire "évoluer" une population d'individus (des chaînes binaires) pour trouver une chaîne binaire cible (la "solution").
 
